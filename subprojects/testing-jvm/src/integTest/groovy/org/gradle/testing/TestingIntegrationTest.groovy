@@ -19,6 +19,7 @@ import org.apache.commons.lang.RandomStringUtils
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.gradle.util.Requires
 import org.gradle.util.TestPrecondition
 import org.hamcrest.Matchers
@@ -29,6 +30,7 @@ import spock.lang.Unroll
 /**
  * General tests for the JVM testing infrastructure that don't deserve their own test class.
  */
+@RepeatWithJUnitPlatform
 class TestingIntegrationTest extends AbstractIntegrationSpec {
 
     @Issue("https://issues.gradle.org/browse/GRADLE-1948")

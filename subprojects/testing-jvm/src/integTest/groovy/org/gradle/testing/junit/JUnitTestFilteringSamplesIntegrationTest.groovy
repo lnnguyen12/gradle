@@ -19,8 +19,10 @@ package org.gradle.testing.junit
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.Sample
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 
+@RepeatWithJUnitPlatform
 public class JUnitTestFilteringSamplesIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule Sample sample = new Sample(temporaryFolder, 'testing/filtering')

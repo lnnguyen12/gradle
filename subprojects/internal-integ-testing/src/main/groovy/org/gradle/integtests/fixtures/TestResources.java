@@ -56,13 +56,23 @@ public class TestResources implements MethodRule {
             public void evaluate() throws Throwable {
                 String className = method.getMethod().getDeclaringClass().getSimpleName();
                 maybeCopy(String.format("%s/shared", className));
-                maybeCopy(String.format("%s/%s", className, method.getName()));
+                maybeCopy(String.format("%s/%s", className, removeBracketsFromMethodName(method.getName())));
                 for (String extraResource : extraResources) {
                     maybeCopy(extraResource);
                 }
                 statement.evaluate();
             }
         };
+    }
+
+    // Remove brackets for spock iteration methods (e.g. this_is_a_test_method[0])
+    private String removeBracketsFromMethodName(String methodName) {
+        int leftBracketIndex = methodName.indexOf('[');
+        int rightBracketIndex = methodName.indexOf(']');
+        if (leftBracketIndex != -1 && rightBracketIndex != -1) {
+            return methodName.substring(0, leftBracketIndex);
+        }
+        return methodName;
     }
 
     /**

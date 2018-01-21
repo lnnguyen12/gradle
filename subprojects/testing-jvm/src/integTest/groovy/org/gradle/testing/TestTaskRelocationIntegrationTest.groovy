@@ -18,9 +18,11 @@ package org.gradle.testing
 
 import org.gradle.integtests.fixtures.AbstractProjectRelocationIntegrationTest
 import org.gradle.test.fixtures.file.TestFile
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 
 import static org.gradle.util.TextUtil.normaliseLineSeparators
 
+@RepeatWithJUnitPlatform
 class TestTaskRelocationIntegrationTest extends AbstractProjectRelocationIntegrationTest {
 
     @Override

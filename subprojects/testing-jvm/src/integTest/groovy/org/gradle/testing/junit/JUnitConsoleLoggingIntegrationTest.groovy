@@ -19,11 +19,13 @@ package org.gradle.testing.junit
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.TestResources
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 
 import static org.hamcrest.Matchers.equalTo
 
 // cannot make assumptions about order in which test methods of JUnit4Test get executed
+@RepeatWithJUnitPlatform
 class JUnitConsoleLoggingIntegrationTest extends AbstractIntegrationSpec {
     @Rule TestResources resources = new TestResources(temporaryFolder)
 

@@ -23,6 +23,7 @@ import org.gradle.integtests.fixtures.TestResources
 import org.gradle.integtests.fixtures.executer.ExecutionResult
 import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
 import org.gradle.test.fixtures.file.TestFile
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 import spock.lang.IgnoreIf
 import spock.lang.Issue
@@ -40,6 +41,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         executer.noExtraLogging()
     }
 
+    @RepeatWithJUnitPlatform
     def executesTestsInCorrectEnvironment() {
         given:
         buildFile << """
@@ -100,6 +102,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         result.testClass('org.gradle.Junit3Test').assertTestPassed('testRenamesItself')
     }
 
+    @RepeatWithJUnitPlatform
     def reportsAndBreaksBuildWhenTestFails() {
         when:
         executer.withTasks('build').runWithFailure().assertTestsFailed()
@@ -137,6 +140,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         result.testClass('org.gradle.UnserializableException').assertTestFailed('unserialized', equalTo('org.gradle.UnserializableException$UnserializableRuntimeException: whatever'))
     }
 
+    @RepeatWithJUnitPlatform
     def canRunSingleTests() {
         when:
         executer.withTasks('test').withArguments('-Dtest.single=Ok2').run()
@@ -164,6 +168,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         failure.assertHasCause('Could not find matching test for pattern: NotATest')
     }
 
+    @RepeatWithJUnitPlatform
     def canUseTestSuperClassesFromAnotherProject() {
         given:
         testDirectory.file('settings.gradle').write("include 'a', 'b'")
@@ -199,6 +204,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         result.testClass('org.gradle.SomeTest').assertTestPassed('ok')
     }
 
+    @RepeatWithJUnitPlatform
     def canExcludeSuperClassesFromExecution() {
         given:
         TestFile buildFile = testDirectory.file('build.gradle')
@@ -229,6 +235,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         result.testClass('org.gradle.SomeTest').assertTestPassed('ok')
     }
 
+    @RepeatWithJUnitPlatform
     def detectsTestClasses() {
         when:
         executer.withTasks('test').run()
@@ -253,6 +260,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         result.testClass('org.gradle.ExecutionOrderTest').assertTestPassed('classUnderTestIsLoadedOnlyByRunner')
     }
 
+    @RepeatWithJUnitPlatform
     def runsAllTestsInTheSameForkedJvm() {
         given:
         testDirectory.file('build.gradle').writelns(
@@ -288,6 +296,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         assertThat(results1.linesThat(containsString('VM START TIME =')).get(0), equalTo(results2.linesThat(containsString('VM START TIME =')).get(0)))
     }
 
+    @RepeatWithJUnitPlatform
     def canSpecifyMaximumNumberOfTestClassesToExecuteInAForkedJvm() {
         given:
         testDirectory.file('build.gradle').writelns(
@@ -325,6 +334,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
                 containsString('VM START TIME =')).get(0))))
     }
 
+    @RepeatWithJUnitPlatform
     def canListenForTestResults() {
         given:
         testDirectory.file('src/main/java/AppException.java').writelns(
@@ -423,6 +433,7 @@ class JUnitIntegrationTest extends AbstractIntegrationSpec {
         assert containsLine(result.getOutput(), "FINISH [Test testError(SomeTest)] [testError] [java.lang.RuntimeException: message]")
     }
 
+    @RepeatWithJUnitPlatform
     @IgnoreIf({GradleContextualExecuter.parallel})
     def canHaveMultipleTestTaskInstances() {
         when:

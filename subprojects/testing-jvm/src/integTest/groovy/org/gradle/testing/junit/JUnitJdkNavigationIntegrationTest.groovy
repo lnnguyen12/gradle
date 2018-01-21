@@ -18,10 +18,12 @@ package org.gradle.testing.junit
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.TestResources
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 import spock.lang.Issue
 
 @Issue("GRADLE-1682")
+@RepeatWithJUnitPlatform
 class JUnitJdkNavigationIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule

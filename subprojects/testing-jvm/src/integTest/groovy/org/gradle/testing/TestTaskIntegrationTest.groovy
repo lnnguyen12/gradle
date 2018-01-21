@@ -18,11 +18,13 @@ package org.gradle.testing
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.test.fixtures.file.TestFile
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.gradle.util.Requires
 import org.gradle.util.TestPrecondition
 import spock.lang.Issue
 import spock.lang.Unroll
 
+@RepeatWithJUnitPlatform
 class TestTaskIntegrationTest extends AbstractIntegrationSpec {
 
     @Issue("GRADLE-2702")

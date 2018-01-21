@@ -18,8 +18,10 @@ package org.gradle.testing
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.JUnitXmlTestExecutionResult
 import org.gradle.integtests.fixtures.TestResources
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 
+@RepeatWithJUnitPlatform
 class IncrementalTestIntegrationTest extends AbstractIntegrationSpec {
 
     @Rule public final TestResources resources = new TestResources(temporaryFolder)

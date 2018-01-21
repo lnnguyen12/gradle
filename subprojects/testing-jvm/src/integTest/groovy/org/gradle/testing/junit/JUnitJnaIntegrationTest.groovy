@@ -19,11 +19,13 @@ package org.gradle.testing.junit
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.DefaultTestExecutionResult
 import org.gradle.integtests.fixtures.TestResources
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.gradle.util.Requires
 import org.gradle.util.TestPrecondition
 import org.junit.Rule
 
 
+@RepeatWithJUnitPlatform
 class JUnitJnaIntegrationTest extends AbstractIntegrationSpec {
     @Rule
     final TestResources resources = new TestResources(testDirectoryProvider)

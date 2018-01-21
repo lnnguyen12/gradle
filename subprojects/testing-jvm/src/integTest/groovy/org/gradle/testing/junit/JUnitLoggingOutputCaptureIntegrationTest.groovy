@@ -20,23 +20,42 @@ import org.gradle.integtests.fixtures.HtmlTestExecutionResult
 import org.gradle.integtests.fixtures.JUnitXmlTestExecutionResult
 import org.gradle.integtests.fixtures.MultiVersionIntegrationSpec
 import org.gradle.integtests.fixtures.TargetCoverage
+import org.gradle.integtests.fixtures.executer.ExecutionResult
+import org.gradle.test.fixtures.junitplatform.JUnitPlatformTestRewriter
 import org.gradle.testing.fixture.JUnitCoverage
 
+import static org.gradle.test.fixtures.junitplatform.JUnitPlatformTestRewriter.LATEST_JUPITER_VERSION
 import static org.hamcrest.Matchers.containsString
 import static org.hamcrest.Matchers.is
 
-@TargetCoverage({JUnitCoverage.LOGGING})
+@TargetCoverage({ JUnitCoverage.LOGGING })
 class JUnitLoggingOutputCaptureIntegrationTest extends MultiVersionIntegrationSpec {
     def setup() {
         buildFile << """
             apply plugin: "java"
             ${mavenCentralRepository()}
-            dependencies { testCompile 'junit:junit:$version' }
             test {
                 reports.junitXml.outputPerTestCase = true
                 onOutput { test, event -> print "\$test -> \$event.message" }
             }
         """
+        if (version == JUnitCoverage.PLATFORM) {
+            buildFile << """
+dependencies {
+    testCompile 'org.junit.jupiter:junit-jupiter-api:${LATEST_JUPITER_VERSION}','org.junit.jupiter:junit-jupiter-engine:${LATEST_JUPITER_VERSION}'
+}
+"""
+        } else {
+            buildFile << "dependencies { testCompile 'junit:junit:$version' }"
+        }
+    }
+
+    @Override
+    protected ExecutionResult run(String... tasks) {
+        if (version == JUnitCoverage.PLATFORM) {
+            JUnitPlatformTestRewriter.rewriteDirectory(testDirectory)
+        }
+        super.run(tasks)
     }
 
     def "captures logging output events"() {
@@ -221,8 +240,7 @@ public class OkTest {
 }
 """
 
-        when:
-        run("test")
+        when: run("test")
 
         then:
         def testResult = new JUnitXmlTestExecutionResult(testDirectory)
@@ -280,7 +298,8 @@ public class OkTest {
 }
 """
 
-        when: run "test"
+        when:
+        run "test"
 
         then:
         def testResult = new JUnitXmlTestExecutionResult(testDirectory)

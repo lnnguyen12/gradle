@@ -18,6 +18,7 @@ package org.gradle.testing
 
 import org.gradle.integtests.fixtures.*
 import org.gradle.integtests.fixtures.executer.GradleContextualExecuter
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 import spock.lang.IgnoreIf
 import spock.lang.Issue
@@ -25,6 +26,7 @@ import spock.lang.Unroll
 
 import static org.hamcrest.Matchers.*
 
+@RepeatWithJUnitPlatform
 class TestReportIntegrationTest extends AbstractIntegrationSpec {
     @Rule Sample sample = new Sample(temporaryFolder)
 

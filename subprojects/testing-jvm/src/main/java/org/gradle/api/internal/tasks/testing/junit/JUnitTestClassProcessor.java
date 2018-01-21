@@ -16,6 +16,7 @@
 
 package org.gradle.api.internal.tasks.testing.junit;
 
+import org.gradle.api.Action;
 import org.gradle.api.internal.tasks.testing.TestClassProcessor;
 import org.gradle.api.internal.tasks.testing.TestClassRunInfo;
 import org.gradle.api.internal.tasks.testing.TestResultProcessor;
@@ -29,11 +30,11 @@ import org.slf4j.LoggerFactory;
 
 public class JUnitTestClassProcessor implements TestClassProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(JUnitTestClassProcessor.class);
-    private final IdGenerator<?> idGenerator;
+    protected final IdGenerator<?> idGenerator;
     private final ActorFactory actorFactory;
-    private final Clock clock;
+    protected final Clock clock;
     private final JUnitSpec spec;
-    private JUnitTestClassExecutor executor;
+    private Action<String> executor;
     private Actor resultProcessorActor;
 
     public JUnitTestClassProcessor(JUnitSpec spec, IdGenerator<?> idGenerator, ActorFactory actorFactory, Clock clock) {
@@ -46,7 +47,6 @@ public class JUnitTestClassProcessor implements TestClassProcessor {
     @Override
     public void startProcessing(TestResultProcessor resultProcessor) {
         // Build a result processor chain
-        ClassLoader applicationClassLoader = Thread.currentThread().getContextClassLoader();
         TestResultProcessor resultProcessorChain = new AttachParentTestResultProcessor(resultProcessor);
         TestClassExecutionEventGenerator eventGenerator = new TestClassExecutionEventGenerator(resultProcessorChain, idGenerator, clock);
 
@@ -55,9 +55,12 @@ public class JUnitTestClassProcessor implements TestClassProcessor {
         TestResultProcessor threadSafeResultProcessor = resultProcessorActor.getProxy(TestResultProcessor.class);
         TestClassExecutionListener threadSafeTestClassListener = resultProcessorActor.getProxy(TestClassExecutionListener.class);
 
-        // Build the JUnit adaptor stuff
+        executor = createTestExecutor(threadSafeResultProcessor,threadSafeTestClassListener);
+    }
+
+    protected Action<String> createTestExecutor(TestResultProcessor threadSafeResultProcessor, TestClassExecutionListener threadSafeTestClassListener) {
         JUnitTestEventAdapter junitEventAdapter = new JUnitTestEventAdapter(threadSafeResultProcessor, clock, idGenerator);
-        executor = new JUnitTestClassExecutor(applicationClassLoader, spec, junitEventAdapter, threadSafeTestClassListener);
+        return new JUnitTestClassExecutor(Thread.currentThread().getContextClassLoader(), spec, junitEventAdapter, threadSafeTestClassListener);
     }
 
     @Override

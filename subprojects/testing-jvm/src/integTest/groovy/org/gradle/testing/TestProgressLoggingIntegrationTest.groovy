@@ -19,9 +19,10 @@ package org.gradle.testing
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.TestResources
 import org.gradle.integtests.fixtures.executer.ProgressLoggingFixture
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Rule
 
-
+@RepeatWithJUnitPlatform
 class TestProgressLoggingIntegrationTest extends AbstractIntegrationSpec {
     @Rule final TestResources resources = new TestResources(temporaryFolder)
     @Rule ProgressLoggingFixture events = new ProgressLoggingFixture(executer, temporaryFolder)

@@ -17,6 +17,7 @@ package org.gradle.testing
 
 import org.gradle.integtests.fixtures.AbstractIntegrationSpec
 import org.gradle.integtests.fixtures.TestResources
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,6 +33,7 @@ public class TestOutputListenerIntegrationTest extends AbstractIntegrationSpec {
     }
 
     @Test
+    @RepeatWithJUnitPlatform
     def "can use standard output listener for tests"() {
         given:
         def test = file("src/test/java/SomeTest.java")
@@ -93,6 +95,7 @@ class RemoveMeListener implements TestOutputListener {
     }
 
     @Test
+    @RepeatWithJUnitPlatform
     def "can register output listener at gradle level and using onOutput method"() {
         given:
         def test = file("src/test/java/SomeTest.java")
@@ -136,6 +139,7 @@ class VerboseOutputListener implements TestOutputListener {
     }
 
     @Test
+    @RepeatWithJUnitPlatform
     def "shows standard streams configured via closure"() {
         given:
         def test = file("src/test/java/SomeTest.java")

@@ -16,8 +16,10 @@
 
 package org.gradle.testing.junit
 
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.gradle.testing.AbstractTestFrameworkIntegrationTest
 
+@RepeatWithJUnitPlatform
 class JUnitTestFrameworkIntegrationTest extends AbstractTestFrameworkIntegrationTest {
 
     def setup() {

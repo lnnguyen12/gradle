@@ -20,11 +20,13 @@ import org.gradle.api.JavaVersion
 import org.gradle.integtests.fixtures.AbstractTaskRelocationIntegrationTest
 import org.gradle.integtests.fixtures.AvailableJavaHomes
 import org.gradle.internal.jvm.Jvm
+import org.gradle.test.fixtures.junitplatform.RepeatWithJUnitPlatform
 import org.gradle.util.Requires
 import org.gradle.util.TextUtil
 
 import static org.gradle.util.TextUtil.normaliseLineSeparators
 
+@RepeatWithJUnitPlatform
 @Requires(adhoc = { AvailableJavaHomes.getAvailableJdks(JavaVersion.VERSION_1_7).size() > 1 })
 class TestTaskJdkRelocationIntegrationTest extends AbstractTaskRelocationIntegrationTest {
 
