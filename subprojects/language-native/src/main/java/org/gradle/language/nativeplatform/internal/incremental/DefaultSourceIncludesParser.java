@@ -16,6 +16,7 @@
 
 package org.gradle.language.nativeplatform.internal.incremental;
 
+import org.gradle.internal.operations.BuildOperationExecutor;
 import org.gradle.language.nativeplatform.internal.IncludeDirectives;
 import org.gradle.language.nativeplatform.internal.incremental.sourceparser.CSourceParser;
 
@@ -32,6 +33,8 @@ public class DefaultSourceIncludesParser implements SourceIncludesParser {
 
     @Override
     public IncludeDirectives parseIncludes(File sourceFile) {
+        BuildOperationExecutor buildOperationExecutor = null;
+        build
         IncludeDirectives parsedIncludes = sourceParser.parseSource(sourceFile);
         if (importAware) {
             return parsedIncludes;
